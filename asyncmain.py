@@ -9,9 +9,11 @@ from google.cloud import firestore
 def get_db() -> firestore.AsyncClient:
     if environ.get("FIRESTORE_EMULATOR_HOST"):
         print("Connecting to emulator")
+        credentials = Mock(spec=google.auth.credentials.Credentials)
+        credentials.id_token = ""
         return firestore.AsyncClient(
             project="firestore-test",
-            credentials=Mock(spec=google.auth.credentials.Credentials),
+            credentials=credentials,
         )
     else:
         print("Connecting to live environment")
